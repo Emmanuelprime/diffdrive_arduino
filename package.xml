@@ -22,8 +22,12 @@
   <depend>pluginlib</depend>
   <depend>rclcpp</depend>
   <depend>serial</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <!-- <depend>rclcpp_lifecyle</depend> -->
 
 
+<test_depend>ament_add_gmock</test_depend>
+<test_depend>hardware_interface</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

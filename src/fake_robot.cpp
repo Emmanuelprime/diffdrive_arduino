@@ -3,18 +3,15 @@
 
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 
-
-FakeRobot::FakeRobot()
-  : logger_(rclcpp::get_logger("FakeRobot"))
-{}
+#include "rclcpp/rclcpp.hpp"
 
 
-
-return_type FakeRobot::configure(const hardware_interface::HardwareInfo & info)
+CallbackReturn FakeRobot::on_init(const hardware_interface::HardwareInfo & info)
 {
-  if (configure_default(info) != return_type::OK) {
-    return return_type::ERROR;
-  }
+  if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS)
+{
+  return CallbackReturn::ERROR;
+}
 
   RCLCPP_INFO(logger_, "Configuring...");
 
@@ -33,8 +30,7 @@ return_type FakeRobot::configure(const hardware_interface::HardwareInfo & info)
 
   RCLCPP_INFO(logger_, "Finished Configuration");
 
-  status_ = hardware_interface::status::CONFIGURED;
-  return return_type::OK;
+  return CallbackReturn::SUCCESS;
 }
 
 std::vector<hardware_interface::StateInterface> FakeRobot::export_state_interfaces()
@@ -64,23 +60,8 @@ std::vector<hardware_interface::CommandInterface> FakeRobot::export_command_inte
 }
 
 
-return_type FakeRobot::start()
-{
-  RCLCPP_INFO(logger_, "Starting Controller...");
-  status_ = hardware_interface::status::STARTED;
 
-  return return_type::OK;
-}
-
-return_type FakeRobot::stop()
-{
-  RCLCPP_INFO(logger_, "Stopping Controller...");
-  status_ = hardware_interface::status::STOPPED;
-
-  return return_type::OK;
-}
-
-hardware_interface::return_type FakeRobot::read()
+hardware_interface::return_type FakeRobot::read(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
 {
 
   // TODO fix chrono duration
@@ -101,7 +82,7 @@ hardware_interface::return_type FakeRobot::read()
   
 }
 
-hardware_interface::return_type FakeRobot::write()
+hardware_interface::return_type FakeRobot::write(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */)
 {
 
   // Set the wheel velocities to directly match what is commanded
@@ -113,7 +94,19 @@ hardware_interface::return_type FakeRobot::write()
   return return_type::OK;  
 }
 
+CallbackReturn FakeRobot::on_activate(const rclcpp_lifecycle::State & /* previous_state */)
+{
+  RCLCPP_INFO(logger_, "Starting Controller...");
 
+  return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn FakeRobot::on_deactivate(const rclcpp_lifecycle::State & /* previous_state */)
+{
+  RCLCPP_INFO(logger_, "Stopping Controller...");
+
+  return CallbackReturn::SUCCESS;
+}
 
 #include "pluginlib/class_list_macros.hpp"
 

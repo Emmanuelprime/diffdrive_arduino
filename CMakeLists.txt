@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 project(diffdrive_arduino)
 
+# Default to C99
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+
+
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
@@ -16,8 +22,8 @@ find_package(serial REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(controller_manager REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
 find_package(pluginlib REQUIRED)
-
 
 
 
@@ -36,6 +42,7 @@ ament_target_dependencies(
   controller_manager
   serial
   rclcpp
+  rclcpp_lifecycle
   pluginlib
 )
 
@@ -56,6 +63,7 @@ ament_target_dependencies(
   hardware_interface
   controller_manager
   rclcpp
+  rclcpp_lifecycle
   pluginlib
 )
 
