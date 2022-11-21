@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   ros::AsyncSpinner spinner(1);
   spinner.start();
 
-  ros::Time prevTime = ros::Time::now();
+  ros::Time prevTime = ros::Time(0); //ros::Time::now();
 
   ros::Rate loop_rate(10);
 
